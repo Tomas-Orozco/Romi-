@@ -11,21 +11,29 @@ public class SymptomReport {
     private Long id;
     
     @Column(name = "dolor_cabeza")
-    private Boolean dolorCabeza;
+    private Integer dolorCabeza;
     
-    private Boolean fiebre;
-    private Boolean tos;
+    private Integer fiebre;
+    private Integer tos;
     
-    @Column(name = "nivel_dolor")
-    private Integer nivelDolor;
+    @Column(name = "dolor_panza")
+    private Integer dolorPanza;
+    
+    @Column(name = "dolor_garganta")
+    private Integer dolorGarganta;
+    
+    private Integer fatiga;
     
     public SymptomReport() {}
     
-    public SymptomReport(Boolean dolorCabeza, Boolean fiebre, Boolean tos, Integer nivelDolor) {
+    public SymptomReport(Integer dolorCabeza, Integer fiebre, Integer tos, 
+                        Integer dolorPanza, Integer dolorGarganta, Integer fatiga) {
         this.dolorCabeza = dolorCabeza;
         this.fiebre = fiebre;
         this.tos = tos;
-        this.nivelDolor = nivelDolor;
+        this.dolorPanza = dolorPanza;
+        this.dolorGarganta = dolorGarganta;
+        this.fatiga = fatiga;
     }
     
     public Long getId() {
@@ -36,35 +44,51 @@ public class SymptomReport {
         this.id = id;
     }
     
-    public Boolean getDolorCabeza() {
+    public Integer getDolorCabeza() {
         return dolorCabeza;
     }
     
-    public void setDolorCabeza(Boolean dolorCabeza) {
+    public void setDolorCabeza(Integer dolorCabeza) {
         this.dolorCabeza = dolorCabeza;
     }
     
-    public Boolean getFiebre() {
+    public Integer getFiebre() {
         return fiebre;
     }
     
-    public void setFiebre(Boolean fiebre) {
+    public void setFiebre(Integer fiebre) {
         this.fiebre = fiebre;
     }
     
-    public Boolean getTos() {
+    public Integer getTos() {
         return tos;
     }
     
-    public void setTos(Boolean tos) {
+    public void setTos(Integer tos) {
         this.tos = tos;
     }
     
-    public Integer getNivelDolor() {
-        return nivelDolor;
+    public Integer getDolorPanza() {
+        return dolorPanza;
     }
     
-    public void setNivelDolor(Integer nivelDolor) {
-        this.nivelDolor = nivelDolor;
+    public void setDolorPanza(Integer dolorPanza) {
+        this.dolorPanza = dolorPanza;
+    }
+    
+    public Integer getDolorGarganta() {
+        return dolorGarganta;
+    }
+    
+    public void setDolorGarganta(Integer dolorGarganta) {
+        this.dolorGarganta = dolorGarganta;
+    }
+    
+    public Integer getFatiga() {
+        return fatiga;
+    }
+    
+    public void setFatiga(Integer fatiga) {
+        this.fatiga = fatiga;
     }
 }
