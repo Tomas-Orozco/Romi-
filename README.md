@@ -1,34 +1,34 @@
-﻿# 🏥 Symptom Tracker - Sistema de Registro de Síntomas Médicos
+﻿# Symptom Tracker - Sistema de Registro de Síntomas Médicos
 
 Una aplicación web full-stack para que los pacientes registren y consulten sus síntomas médicos de manera sencilla e intuitiva.
 
-## 📋 Tabla de Contenidos
+## Tabla de Contenidos
 
-- [Descripción del Proyecto](#-descripción-del-proyecto)
-- [Arquitectura del Sistema](#-arquitectura-del-sistema)
-- [Tecnologías Utilizadas](#-tecnologías-utilizadas)
-- [Estructura del Proyecto](#-estructura-del-proyecto)
-- [Clases y Componentes](#-clases-y-componentes)
-- [Instalación y Configuración](#-instalación-y-configuración)
-- [Uso de la Aplicación](#-uso-de-la-aplicación)
-- [API Endpoints](#-api-endpoints)
-- [Problemas Conocidos](#-problemas-conocidos)
-- [Próximas Mejoras](#-próximas-mejoras)
+- [Descripción del Proyecto](#descripción-del-proyecto)
+- [Arquitectura del Sistema](#arquitectura-del-sistema)
+- [Tecnologías Utilizadas](#tecnologías-utilizadas)
+- [Estructura del Proyecto](#estructura-del-proyecto)
+- [Clases y Componentes](#clases-y-componentes)
+- [Instalación y Configuración](#instalación-y-configuración)
+- [Uso de la Aplicación](#uso-de-la-aplicación)
+- [API Endpoints](#api-endpoints)
+- [Problemas Conocidos](#problemas-conocidos)
+- [Próximas Mejoras](#próximas-mejoras)
 
-## 🎯 Descripción del Proyecto
+## Descripción del Proyecto
 
 **Symptom Tracker** es una aplicación web diseñada para permitir a los pacientes registrar sus síntomas médicos de manera digital. La aplicación permite evaluar 6 síntomas diferentes en una escala de 0 a 10, proporcionando una interfaz intuitiva y responsiva.
 
 ### Características Principales
 
-- ✅ **Registro de Síntomas**: 6 síntomas con escala de intensidad (0-10)
-- ✅ **Interfaz Responsiva**: Diseño mobile-first
-- ✅ **Validaciones**: Validaciones básicas en frontend
-- ✅ **Persistencia**: Base de datos en memoria
-- ✅ **API REST**: Backend con endpoints bien definidos
-- ✅ **CORS**: Comunicación frontend-backend configurada
+- **Registro de Síntomas**: 6 síntomas con escala de intensidad (0-10)
+- **Interfaz Responsiva**: Diseño mobile-first
+- **Validaciones**: Validaciones básicas en frontend
+- **Persistencia**: Base de datos en memoria
+- **API REST**: Backend con endpoints bien definidos
+- **CORS**: Comunicación frontend-backend configurada
 
-## 🏗️ Arquitectura del Sistema
+## Arquitectura del Sistema
 
 ```
 ┌─────────────────┐    HTTP/REST    ┌─────────────────┐
@@ -52,7 +52,7 @@ Una aplicación web full-stack para que los pacientes registren y consulten sus 
 - **Base de Datos**: H2 en memoria para desarrollo
 - **Comunicación**: HTTP/REST con JSON
 
-## 🛠️ Tecnologías Utilizadas
+## Tecnologías Utilizadas
 
 ### Frontend
 
@@ -89,29 +89,29 @@ Una aplicación web full-stack para que los pacientes registren y consulten sus 
 - **H2**: Base de datos ligera perfecta para desarrollo y testing
 - **Maven**: Estándar de la industria para gestión de dependencias Java
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 symptom-tracker/
-├── 📁 frontend/                    # Aplicación React
-│   ├── 📁 public/                  # Archivos estáticos
+├── frontend/                    # Aplicación React
+│   ├── public/                  # Archivos estáticos
 │   │   ├── index.html              # HTML principal
 │   │   ├── favicon.ico             # Icono de la aplicación
 │   │   └── manifest.json           # Configuración PWA
-│   ├── 📁 src/                     # Código fuente
+│   ├── src/                     # Código fuente
 │   │   ├── App.tsx                 # Componente principal
 │   │   ├── App.css                 # Estilos principales
 │   │   ├── index.tsx               # Punto de entrada
 │   │   └── index.css               # Estilos globales
 │   ├── package.json                # Dependencias y scripts
 │   └── tsconfig.json               # Configuración TypeScript
-├── 📁 backend/                     # Aplicación Spring Boot
-│   ├── 📁 src/main/java/com/example/symptoms/
+├── backend/                     # Aplicación Spring Boot
+│   ├── src/main/java/com/example/symptoms/
 │   │   ├── SymptomTrackerApplication.java    # Clase principal
 │   │   ├── SymptomReport.java               # Entidad JPA
 │   │   ├── SymptomController.java           # Controlador REST
 │   │   └── SymptomReportRepository.java    # Repositorio JPA
-│   ├── 📁 src/main/resources/
+│   ├── src/main/resources/
 │   │   └── application.yml                  # Configuración
 │   └── pom.xml                              # Dependencias Maven
 ├── README.md                        # Documentación principal
@@ -119,7 +119,7 @@ symptom-tracker/
 └── start.sh                         # Script de inicio (Linux/Mac)
 ```
 
-## 🧩 Clases y Componentes
+## Clases y Componentes
 
 ### Frontend (React)
 
@@ -218,7 +218,7 @@ public interface SymptomReportRepository extends JpaRepository<SymptomReport, Lo
 
 **Propósito:** Abstracción para operaciones CRUD con la base de datos
 
-## 🚀 Instalación y Configuración
+## Instalación y Configuración
 
 ### Prerrequisitos
 
@@ -260,7 +260,7 @@ start.bat
 ./start.sh
 ```
 
-## 💻 Uso de la Aplicación
+## Uso de la Aplicación
 
 ### 1. Acceder a la Aplicación
 - Frontend: `http://localhost:3000`
@@ -275,7 +275,7 @@ start.bat
 1. Hacer clic en "Ver Registros"
 2. Revisar historial de síntomas guardados
 
-## 🔌 API Endpoints
+## API Endpoints
 
 ### Base URL
 ```
@@ -330,7 +330,7 @@ Obtener todos los reportes de síntomas.
 ]
 ```
 
-## ⚠️ Problemas Conocidos
+## Problemas Conocidos
 
 ### 1. Backend No Inicia
 **Problema:** Conflicto de versiones Java 17 vs Java 21
@@ -351,7 +351,7 @@ mvn spring-boot:run
 **Problema:** Puerto 8080 ocupado
 **Solución:** Cambiar a puerto 8081 en `application.yml`
 
-## 🔮 Próximas Mejoras
+## Próximas Mejoras
 
 ### Funcionalidades
 - [ ] Autenticación de usuarios
@@ -373,7 +373,7 @@ mvn spring-boot:run
 - [ ] PWA (Progressive Web App)
 - [ ] Notificaciones push
 
-## 📝 Notas de Desarrollo
+## Notas de Desarrollo
 
 ### Decisiones de Diseño
 
@@ -388,7 +388,7 @@ mvn spring-boot:run
 - Sanitización de datos
 - CORS configurado para desarrollo local
 
-## 👥 Contribución
+## Contribución
 
 1. Fork el proyecto
 2. Crear una rama para tu feature (`git checkout -b feature/AmazingFeature`)
@@ -396,10 +396,10 @@ mvn spring-boot:run
 4. Push a la rama (`git push origin feature/AmazingFeature`)
 5. Abrir un Pull Request
 
-## 📄 Licencia
+## Licencia
 
 Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para detalles.
 
 ---
 
-**Desarrollado con ❤️ para facilitar el registro de síntomas médicos**
+**Desarrollado para facilitar el registro de síntomas médicos**
