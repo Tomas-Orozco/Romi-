@@ -1,26 +1,30 @@
-﻿import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./App.css";
 
 interface SymptomReport {
   id: number;
-  dolorCabeza: boolean;
-  fiebre: boolean;
-  tos: boolean;
-  nivelDolor: number;
+  dolorCabeza: number;
+  fiebre: number;
+  tos: number;
+  dolorPanza: number;
+  dolorGarganta: number;
+  fatiga: number;
 }
 
 function App() {
   const [symptoms, setSymptoms] = useState<SymptomReport[]>([]);
   const [formData, setFormData] = useState({
-    dolorCabeza: false,
-    fiebre: false,
-    tos: false,
-    nivelDolor: 1
+    dolorCabeza: 0,
+    fiebre: 0,
+    tos: 0,
+    dolorPanza: 0,
+    dolorGarganta: 0,
+    fatiga: 0
   });
   const [showForm, setShowForm] = useState(true);
 
-  const API_URL = 'http://localhost:8080/symptoms';
+  const API_URL = "http://localhost:8081/symptoms";
 
   useEffect(() => {
     fetchSymptoms();
@@ -31,55 +35,76 @@ function App() {
       const response = await axios.get(API_URL);
       setSymptoms(response.data);
     } catch (error) {
-      console.error('Error fetching symptoms:', error);
+      console.error("Error fetching symptoms:", error);
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (formData.nivelDolor < 1 || formData.nivelDolor > 10) {
-      alert('El nivel de dolor debe estar entre 1 y 10');
+    // Verificar que al menos un s?ntoma tenga nivel mayor a 0
+    const hasSymptoms = Object.values(formData).some(value => value > 0);
+    if (!hasSymptoms) {
+      alert("Debes seleccionar al menos un s?ntoma");
       return;
     }
 
     try {
-      await axios.post(API_URL, formData);
+      const response = await axios.post(API_URL, formData);
+      console.log("Response:", response.data);
+      
+      // Resetear formulario
       setFormData({
-        dolorCabeza: false,
-        fiebre: false,
-        tos: false,
-        nivelDolor: 1
+        dolorCabeza: 0,
+        fiebre: 0,
+        tos: 0,
+        dolorPanza: 0,
+        dolorGarganta: 0,
+        fatiga: 0
       });
-      fetchSymptoms();
-      alert('Síntomas registrados correctamente');
+      
+      // Recargar s?ntomas
+      await fetchSymptoms();
+      alert("S?ntomas registrados correctamente");
     } catch (error) {
-      console.error('Error saving symptoms:', error);
-      alert('Error al guardar los síntomas');
+      console.error("Error saving symptoms:", error);
+      alert("Error al guardar los s?ntomas: " + (error as any).message);
     }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, type, checked, value } = e.target;
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : parseInt(value)
+      [name]: parseInt(value)
     }));
+  };
+
+  const getSymptomName = (key: string) => {
+    const names: { [key: string]: string } = {
+      dolorCabeza: "Dolor de cabeza",
+      fiebre: "Fiebre",
+      tos: "Tos",
+      dolorPanza: "Dolor de panza",
+      dolorGarganta: "Dolor de garganta",
+      fatiga: "Fatiga"
+    };
+    return names[key] || key;
   };
 
   return (
     <div className="app">
       <header className="header">
-        <h1>Registro de Síntomas</h1>
+        <h1>Registro de Sintomas</h1>
         <nav>
           <button 
-            className={showForm ? 'active' : ''} 
+            className={showForm ? "active" : ""} 
             onClick={() => setShowForm(true)}
           >
             Registrar
           </button>
           <button 
-            className={!showForm ? 'active' : ''} 
+            className={!showForm ? "active" : ""} 
             onClick={() => setShowForm(false)}
           >
             Ver Registros
@@ -90,67 +115,39 @@ function App() {
       <main className="main">
         {showForm ? (
           <form onSubmit={handleSubmit} className="form">
-            <h2>Registrar Nuevos Síntomas</h2>
+            <h2>Registrar Nuevos Sintomas</h2>
+            <p className="form-description">
+              Evalua cada sintoma del 0 (sin sintomas) al 10 (muy intenso)
+            </p>
             
-            <div className="form-group">
-              <label>
+            {Object.keys(formData).map((symptom) => (
+              <div key={symptom} className="form-group">
+                <label htmlFor={symptom}>
+                  {getSymptomName(symptom)}: {formData[symptom as keyof typeof formData]}/10
+                </label>
                 <input
-                  type="checkbox"
-                  name="dolorCabeza"
-                  checked={formData.dolorCabeza}
+                  type="range"
+                  id={symptom}
+                  name={symptom}
+                  min="0"
+                  max="10"
+                  value={formData[symptom as keyof typeof formData]}
                   onChange={handleInputChange}
                 />
-                Dolor de cabeza
-              </label>
-            </div>
-
-            <div className="form-group">
-              <label>
-                <input
-                  type="checkbox"
-                  name="fiebre"
-                  checked={formData.fiebre}
-                  onChange={handleInputChange}
-                />
-                Fiebre
-              </label>
-            </div>
-
-            <div className="form-group">
-              <label>
-                <input
-                  type="checkbox"
-                  name="tos"
-                  checked={formData.tos}
-                  onChange={handleInputChange}
-                />
-                Tos
-              </label>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="nivelDolor">
-                Nivel de dolor (1-10): {formData.nivelDolor}
-              </label>
-              <input
-                type="range"
-                id="nivelDolor"
-                name="nivelDolor"
-                min="1"
-                max="10"
-                value={formData.nivelDolor}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
+                <div className="range-labels">
+                  <span>0 - Sin sintomas</span>
+                  <span>10 - Muy intenso</span>
+                </div>
+              </div>
+            ))}
 
             <button type="submit" className="submit-btn">
-              Guardar Síntomas
+              Guardar Sintomas
             </button>
           </form>
         ) : (
           <div className="records">
-            <h2>Registros de Síntomas</h2>
+            <h2>Registros de Sintomas</h2>
             {symptoms.length === 0 ? (
               <p>No hay registros disponibles</p>
             ) : (
@@ -159,10 +156,14 @@ function App() {
                   <div key={symptom.id} className="record-item">
                     <h3>Registro #{symptom.id}</h3>
                     <div className="symptom-details">
-                      <p><strong>Dolor de cabeza:</strong> {symptom.dolorCabeza ? 'Sí' : 'No'}</p>
-                      <p><strong>Fiebre:</strong> {symptom.fiebre ? 'Sí' : 'No'}</p>
-                      <p><strong>Tos:</strong> {symptom.tos ? 'Sí' : 'No'}</p>
-                      <p><strong>Nivel de dolor:</strong> {symptom.nivelDolor}/10</p>
+                      {Object.entries(symptom).map(([key, value]) => {
+                        if (key === 'id') return null;
+                        return (
+                          <p key={key}>
+                            <strong>{getSymptomName(key)}:</strong> {value}/10
+                          </p>
+                        );
+                      })}
                     </div>
                   </div>
                 ))}
