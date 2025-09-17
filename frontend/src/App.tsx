@@ -4,6 +4,8 @@ import "./App.css";
 
 interface SymptomReport {
   id: number;
+  nombre: string;
+  edad: number;
   dolorCabeza: number;
   fiebre: number;
   tos: number;
@@ -15,6 +17,8 @@ interface SymptomReport {
 function App() {
   const [symptoms, setSymptoms] = useState<SymptomReport[]>([]);
   const [formData, setFormData] = useState({
+    nombre: "",
+    edad: 0,
     dolorCabeza: 0,
     fiebre: 0,
     tos: 0,
@@ -23,6 +27,7 @@ function App() {
     fatiga: 0
   });
   const [showForm, setShowForm] = useState(true);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const API_URL = "http://localhost:8081/symptoms";
 
@@ -43,9 +48,20 @@ function App() {
     e.preventDefault();
     
     // Verificar que al menos un s?ntoma tenga nivel mayor a 0
-    const hasSymptoms = Object.values(formData).some(value => value > 0);
+    if (!formData.nombre.trim()) {
+      alert("Debes ingresar tu nombre");
+      return;
+    }
+    
+    if (formData.edad <= 0) {
+      alert("Debes ingresar una edad válida");
+      return;
+    }
+    
+    const symptomKeys = ['dolorCabeza', 'fiebre', 'tos', 'dolorPanza', 'dolorGarganta', 'fatiga'];
+    const hasSymptoms = symptomKeys.some(key => formData[key as keyof typeof formData] > 0);
     if (!hasSymptoms) {
-      alert("Debes seleccionar al menos un s?ntoma");
+      alert("Debes seleccionar al menos un sintoma");
       return;
     }
 
@@ -55,6 +71,8 @@ function App() {
       
       // Resetear formulario
       setFormData({
+        nombre: "",
+        edad: 0,
         dolorCabeza: 0,
         fiebre: 0,
         tos: 0,
@@ -65,10 +83,18 @@ function App() {
       
       // Recargar s?ntomas
       await fetchSymptoms();
-      alert("S?ntomas registrados correctamente");
+      
+      // Mostrar mensaje de confirmación
+      setSuccessMessage("¡Síntomas registrados correctamente!");
+      
+      // Cambiar a la vista de registros después de un breve delay
+      setTimeout(() => {
+        setShowForm(false);
+        setSuccessMessage("");
+      }, 1500);
     } catch (error) {
       console.error("Error saving symptoms:", error);
-      alert("Error al guardar los s?ntomas: " + (error as any).message);
+      alert("Error al guardar los sintomas: " + (error as any).message);
     }
   };
 
@@ -76,7 +102,7 @@ function App() {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: parseInt(value)
+      [name]: name === 'nombre' ? value : parseInt(value)
     }));
   };
 
@@ -113,6 +139,12 @@ function App() {
       </header>
 
       <main className="main">
+        {successMessage && (
+          <div className="success-message">
+            {successMessage}
+          </div>
+        )}
+        
         {showForm ? (
           <form onSubmit={handleSubmit} className="form">
             <h2>Registrar Nuevos Sintomas</h2>
@@ -120,7 +152,35 @@ function App() {
               Evalua cada sintoma del 0 (sin sintomas) al 10 (muy intenso)
             </p>
             
-            {Object.keys(formData).map((symptom) => (
+            <div className="form-group">
+              <label htmlFor="nombre">Nombre:</label>
+              <input
+                type="text"
+                id="nombre"
+                name="nombre"
+                value={formData.nombre}
+                onChange={handleInputChange}
+                required
+                placeholder="Ingresa tu nombre"
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="edad">Edad:</label>
+              <input
+                type="number"
+                id="edad"
+                name="edad"
+                value={formData.edad}
+                onChange={handleInputChange}
+                required
+                min="1"
+                max="120"
+                placeholder="Ingresa tu edad"
+              />
+            </div>
+            
+            {Object.keys(formData).filter(key => key !== 'nombre' && key !== 'edad').map((symptom) => (
               <div key={symptom} className="form-group">
                 <label htmlFor={symptom}>
                   {getSymptomName(symptom)}: {formData[symptom as keyof typeof formData]}/10
@@ -154,10 +214,10 @@ function App() {
               <div className="records-list">
                 {symptoms.map((symptom) => (
                   <div key={symptom.id} className="record-item">
-                    <h3>Registro #{symptom.id}</h3>
+                    <h3>Registro #{symptom.id} - {symptom.nombre} ({symptom.edad} años)</h3>
                     <div className="symptom-details">
                       {Object.entries(symptom).map(([key, value]) => {
-                        if (key === 'id') return null;
+                        if (key === 'id' || key === 'nombre' || key === 'edad') return null;
                         return (
                           <p key={key}>
                             <strong>{getSymptomName(key)}:</strong> {value}/10

@@ -10,6 +10,9 @@ public class SymptomReport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    private String nombre;
+    private Integer edad;
+    
     @Column(name = "dolor_cabeza")
     private Integer dolorCabeza;
     
@@ -26,8 +29,10 @@ public class SymptomReport {
     
     public SymptomReport() {}
     
-    public SymptomReport(Integer dolorCabeza, Integer fiebre, Integer tos, 
+    public SymptomReport(String nombre, Integer edad, Integer dolorCabeza, Integer fiebre, Integer tos, 
                         Integer dolorPanza, Integer dolorGarganta, Integer fatiga) {
+        this.nombre = nombre;
+        this.edad = edad;
         this.dolorCabeza = dolorCabeza;
         this.fiebre = fiebre;
         this.tos = tos;
@@ -90,5 +95,21 @@ public class SymptomReport {
     
     public void setFatiga(Integer fatiga) {
         this.fatiga = fatiga;
+    }
+    
+    public String getNombre() {
+        return nombre;
+    }
+    
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    
+    public Integer getEdad() {
+        return edad;
+    }
+    
+    public void setEdad(Integer edad) {
+        this.edad = edad;
     }
 }

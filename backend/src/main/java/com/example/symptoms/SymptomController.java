@@ -7,7 +7,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/symptoms")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:3000")
 public class SymptomController {
 
     @Autowired
